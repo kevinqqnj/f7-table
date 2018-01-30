@@ -1,4 +1,4 @@
-# f7-table
+# f7-table Component
 component of Framework7 table for Vue.js, including Pagination, Sorting, Selection, customized cell action
 
 ## Features
@@ -30,3 +30,13 @@ export default {
 <!-- slot: rows -->
 </f7table>
 ```
+
+## How to run demo
+- git clone https://github.com/kevinqqnj/f7-table.git
+- npm install
+- npm run dev
+
+That's it!
+
+## Advanced
+TBD
