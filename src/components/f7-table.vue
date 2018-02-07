@@ -14,7 +14,7 @@
                             <f7-link @click="page_change(querydata.current_page-1)" :class="querydata.current_page<=1?'disabled':''">
                                 <f7-icon icon="fas fa-chevron-left color-blue"></f7-icon>
                             </f7-link>
-                            <f7-link popover-open="#pop-paging" href="#" class="text-color-blue">{{querydata.current_page}} / {{querydata.last_page}}</f7-link>
+                            <f7-link :popover-open="'#pop-paging'+table_id" href="#" class="text-color-blue">{{querydata.current_page}} / {{querydata.last_page}}</f7-link>
                             <f7-link @click="page_change(querydata.current_page+1)" :class="querydata.current_page>=querydata.last_page?'disabled':''">
                                 <f7-icon icon="fas fa-chevron-right color-blue"></f7-icon>
                             </f7-link>
@@ -58,7 +58,7 @@
                 </tbody>
             </table>
         </div>
-        <f7-popover class="popover-menu popover-max-height" id="pop-paging">
+        <f7-popover class="popover-menu popover-max-height" :id="'pop-paging'+table_id">
             <f7-list>
                 <f7-list-item link="#" :title="sr" v-for="(sr, index) in querydata.last_page" :key="index" class="popover-close" @click="page_change(sr)" :class="querydata.current_page==sr ? 'color-blue' : ''">
                 </f7-list-item>
@@ -130,6 +130,7 @@ export default {
     data() {
         return {
             selectedIndexList: [], // the index of selected rows
+            table_id: 0, // to distinguish tables
         }
     },
     filters: {
@@ -138,12 +139,11 @@ export default {
         }
     },
     created() {},
-    mounted() {},
+    mounted() {
+        this.table_id = Date.now()
+    },
     beforeDestroy() {},
     computed: {
-        name1() {
-            return;
-        },
     },
     methods: {
         set_sortkey(sort_key, sortTable) {
