@@ -1,6 +1,13 @@
 # f7-table Component
 component of Framework7 table for Vue.js, including Pagination, Sorting, Selection, customized cell action
 
+Snap-shot:
+![basic](snap_basic.png "basic table")
+![checkbox](snap_checkbox.png "checkbox table")
+![cell](snap_cell-action.png "cell action & sort table")
+
+Live demo: https://ourbits.herokuapp.com/f7-table
+
 ## Features
 One line to create table:
 ```
