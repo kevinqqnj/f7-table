@@ -33,8 +33,8 @@ Live demo: https://ourbits.herokuapp.com/f7-table
 That's it!
 
 ## Usage
-1) setup you framework7 (v2) + vue project.
-Here's one kind of template: https://github.com/kevinqqnj/Framework7-Vue-Webpack-Template-v2
+1) setup your framework7 (v2) + vue project.
+Here's one template: https://github.com/kevinqqnj/Framework7-Vue-Webpack-Template-v2
 2) copy `src/components/f7-table.vue` to your project
 3) import it as component in .vue `script`. e.g.
 ```
@@ -49,12 +49,12 @@ export default {
 ```
 # /src/pages/basic-table.vue
 <template>
-<f7table :fields="fields" :querydata="querydata">
+<f7-table :fields="fields" :querydata="querydata">
     <!-- slot: data-table-header-selected -->
     <!-- thead -->
     <!-- tbody -->
     <!-- slot: rows -->
-</f7table>
+</f7-table>
 </template>
 ```
 
@@ -82,27 +82,27 @@ See: https://github.com/kevinqqnj/f7-table#fetch-data-from-server
 3) Show checkbox at first column:
 ```
 # /src/pages/checkbox-table.vue
-<f7table :__checkbox="true" />
+<f7-table :__checkbox="true" />
 ```
 
 4) use your own `sortOrders` data:
 ```
-<f7table :sortOrders.sync="sortOrders" />
+<f7-table :sortOrders.sync="sortOrders" />
 ```
 
 5) use your own `per_page` data:
 ```
-<f7table :per_page.sync="per_page" />
+<f7-table :per_page.sync="per_page" />
 ```
 
 ### Events:
 1) @pageChange: listen to page-change event, then fetch new data from server
 ```
-<f7table @pageChange="query_data_from_api()" />
+<f7-table @pageChange="query_data_from_api()" />
 ```
 2) @orderChange: listen to sort-order-change event, then fetch new data from server
 ```
-<f7table @orderChange="query_data_from_api()" />
+<f7-table @orderChange="query_data_from_api()" />
 ```
 
 ### Slot
@@ -123,7 +123,7 @@ You can easily define your actions on different cells, e.g. open "Edit" popover,
 e.g.:
 ```
 # /src/pages/cell-action-table.vue
-<f7table :fields="fields" :querydata="querydata" :__checkbox="true" :sortOrders.sync="sortOrders" :per_page.sync="per_page" @orderChange="query_data_from_api()" @pageChange="query_data_from_api()">
+<f7-table :fields="fields" :querydata="querydata" :__checkbox="true" :sortOrders.sync="sortOrders" :per_page.sync="per_page" @orderChange="query_data_from_api()" @pageChange="query_data_from_api()">
     <!-- thead -->
     <!-- tbody -->
     <tr slot="rows" slot-scope="props">
@@ -136,14 +136,14 @@ e.g.:
                 <!-- if you need different CSS/Actions for different columns, not use "td v-for", just render "td" one by one-->
     </tr>
 
-</f7table>
+</f7-table>
 ```
 
 ### fetch data from Server
 The table shows data from 'querydata', it can be fetched from server side, format is like:
 ```
 # /src/querydata.js
-const querydata = {
+{
   "data": [
           {
             name: 'Frozen Yogurt',
@@ -165,4 +165,3 @@ const querydata = {
   "total": 245
 }
 ```
-
