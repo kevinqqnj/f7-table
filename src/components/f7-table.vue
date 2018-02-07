@@ -8,29 +8,29 @@
                     <f7-list form form-store-data inline-labels>
                         <f7-list-item :title="per_page.title" class="per-page text-color-gray">
                             <f7-input type="select" placeholder="Please choose..." @input="per_page.selected = $event.target.value" :value="per_page.selected">
-                                <option :value="index" v-for="(item, index) of per_page.data">{{item}}</option>
+                                <option :value="index" v-for="(item, index) of per_page.options">{{item}}</option>
                             </f7-input>
                             <!-- pagination -->
                             <f7-link @click="page_change(querydata.current_page-1)">
-				    <span v-show="querydata.current_page>1"><f7-icon icon="fas fa-chevron-left color-blue"></f7-icon></span>
-					<span v-show="querydata.current_page<=1"><f7-icon icon="fas fa-chevron-left color-gray" ></f7-icon></span>
-				    </f7-link>
+                                <span v-show="querydata.current_page>1"><f7-icon icon="fas fa-chevron-left color-blue"></f7-icon></span>
+                                <span v-show="querydata.current_page<=1"><f7-icon icon="fas fa-chevron-left color-gray" ></f7-icon></span>
+                            </f7-link>
                             <f7-link popover-open="#pop-paging" href="#" class="text-color-blue">{{querydata.current_page}} / {{querydata.last_page}}</f7-link>
-    					<f7-link @click="page_change(querydata.current_page+1)">
-				    <span v-show="querydata.current_page<querydata.last_page"><f7-icon icon="fas fa-chevron-right color-blue"></f7-icon></span>
-					<span v-show="querydata.current_page>=querydata.last_page"><f7-icon icon="fas fa-chevron-right color-gray" ></f7-icon></span>
-				    </f7-link>
+                            <f7-link @click="page_change(querydata.current_page+1)">
+                                <span v-show="querydata.current_page<querydata.last_page"><f7-icon icon="fas fa-chevron-right color-blue"></f7-icon></span>
+                                <span v-show="querydata.current_page>=querydata.last_page"><f7-icon icon="fas fa-chevron-right color-gray" ></f7-icon></span>
+                            </f7-link>
                         </f7-list-item>
                     </f7-list>
                 </div>
             </div>
             <slot name="data-table-header-selected">
-                <div slot="data-table-header-selected" class="data-table-header-selected">
-                <div class="data-table-title-selected">
-                    {{selectIndex.length}} items selected
+                <div class="data-table-header-selected">
+			<div class="data-table-title-selected">
+                      {{selectedIndexList.length}} items selected
+			</div>
                 </div>
-            </div>
-    </slot>
+            </slot>
         </div>
         <div class="card-content">
             <table>
@@ -39,22 +39,24 @@
                         <th v-if="__checkbox" class="checkbox-cell" title="Select/Unselect All">
                             <f7-checkbox />
                         </th>
-                        <th v-for="item in fields" :key="item.name" :class="(item.name=='id') ? 'label-cell sortable-cell sortable-cell-active' : (item.sortTable!=undefined) ? 'sortable-cell '+item.titleClass : item.titleClass" @click="set_sortkey(item.name, item.sortTable)">{{item.title}}
+                        <th v-for="item in fields" :key="item.name" :class="(item.name==sortOrders.__activeField) ? 'label-cell sortable-cell sortable-cell-active' : (item.sortTable!=undefined) ? 'sortable-cell '+item.titleClass : item.titleClass" @click="set_sortkey(item.name, item.sortTable)">{{item.title}}
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- https://vuejs.org/v2/guide/components#Scoped-Slots-->
                     <slot name="rows" v-for="(item, index) in querydata.data" :tr="item" :tr_index="index">
-                    	  <tr v-for="(item, index) in querydata.data">
-                <td v-if="__checkbox" class="checkbox-cell">
-                    <label class="checkbox"><input type="checkbox" :value="index" v-model="selectIndex"><i class="icon-checkbox"></i></label>
-                </td>
-                <td v-for="f in fields">
-                {{ item[f.name] }}
-                </td>
-            	</tr>
-            </slot>
+                        <tr>
+                            <td v-if="__checkbox" class="checkbox-cell">
+                                <label class="checkbox">
+                                    <input type="checkbox" :value="index" v-model="selectedIndexList"><i class="icon-checkbox"></i>
+                                </label>
+                            </td>
+                            <td v-for="f in fields">
+                                {{ item[f.name] }}
+                            </td>
+                        </tr>
+                    </slot>
                 </tbody>
             </table>
         </div>
@@ -75,20 +77,33 @@
     min-width: 30px;
 }
 .md .list select {
-	font-size: 14px;
+    font-size: 14px;
 }
 .data-table .data-table-actions a.link {
     min-width: max-content;
 }
-
+.popover-max-height .popover-inner {
+      max-height: 90vh;
+}
 </style>
 <script>
-import { f7Icon, f7List, f7ListItem, f7Popover, f7Label, f7Link, f7Row, f7Col, f7Checkbox, f7Input  } from 'framework7-vue';
+// by ezhqing@gmail.com
+// https://github.com/kevinqqnj/f7-table
+import { f7Icon, f7List, f7ListItem, f7Popover, f7Label, f7Link, f7Row, f7Col, f7Checkbox, f7Input } from 'framework7-vue';
 export default {
-    name: 'f7table',
+    name: 'f7-table',
     components: {
-    	f7Icon, f7List, f7ListItem, f7Popover, f7Label, f7Link, f7Row, f7Col, f7Checkbox, f7Input,
-    },    	
+        f7Icon,
+        f7List,
+        f7ListItem,
+        f7Popover,
+        f7Label,
+        f7Link,
+        f7Row,
+        f7Col,
+        f7Checkbox,
+        f7Input,
+    },
     props: {
         fields: { type: Array, required: true, },
         querydata: { type: Object, required: true, },
@@ -98,7 +113,7 @@ export default {
             default: () => {
                 return {
                     'id': { direction: 'desc', table: '' }, //  asc or 'desc'
-                    '__activeField': 'id', // current sort field
+                    '__activeField': 'id', // // current sort field
                 }
             }
         },
@@ -107,7 +122,7 @@ export default {
             default: () => {
                 return {
                     title: 'Per Page: ',
-                    data: [5, 20, 50, 100, 200],
+                    options: [10, 20, 50, 100, 200],
                     selected: 0,
                     next_page: -1,
                 }
@@ -116,7 +131,7 @@ export default {
     },
     data() {
         return {
-        	selectIndex: [],  // the index of selected rows
+            selectedIndexList: [], // the index of selected rows
         }
     },
     filters: {
@@ -134,7 +149,8 @@ export default {
     },
     methods: {
         set_sortkey(sort_key, sortTable) {
-            // console.log(`sort_key: ${sort_key}`)
+            // console.log(`sort_key:${sort_key} sortTable:${sortTable}`)
+            if (sortTable == undefined) return
             // if sort-key was clicked before
             if (this.sortOrders[sort_key]) {
                 // same key
@@ -161,5 +177,4 @@ export default {
         },
     }
 }
-
 </script>

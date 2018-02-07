@@ -5,17 +5,17 @@
         </f7-navbar>
         <f7-block-title>Introduction</f7-block-title>
         <f7-block inner>
-            <p>This is re-usable component of Framework7 table for Vue.js, including Pagination, Sorting, Selection, customized cell action.</p>
+            <p>This is easy to use and expandable component of Framework7 table for Vue.js, including Pagination, Sorting, Selection, customized cell action.</p>
         </f7-block>
-        <f7-block-title>Demos</f7-block-title>
+        <f7-block-title>f7-table Demos</f7-block-title>
         <f7-list>
-            <f7-list-item link="/basic-table/" title="basic table">
+            <f7-list-item link="/basic-table/" title="Basic: only 'Fields' and 'Querydata' provided">
                 <f7-icon slot="media" icon="far fa-list-alt fa-lg fa-fw"></f7-icon>
             </f7-list-item>
-            <f7-list-item link="/checkbox-table/" title="checkbox table">
+            <f7-list-item link="/checkbox-table/" title="Show Checkbox column and Sortable">
                 <f7-icon slot="media" icon="far fa-check-square fa-lg fa-fw"></f7-icon>
             </f7-list-item>
-            <f7-list-item link="/cell-action-table/" title="cell action table">
+            <f7-list-item link="/cell-action-table/" title="Cell with actions">
                 <f7-icon slot="media" icon="fas fa-paper-plane fa-lg fa-fw"></f7-icon>
             </f7-list-item>
             <f7-list-item link="">
