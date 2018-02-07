@@ -11,14 +11,12 @@
                                 <option :value="index" v-for="(item, index) of per_page.options">{{item}}</option>
                             </f7-input>
                             <!-- pagination -->
-                            <f7-link @click="page_change(querydata.current_page-1)">
-                                <span v-show="querydata.current_page>1"><f7-icon icon="fas fa-chevron-left color-blue"></f7-icon></span>
-                                <span v-show="querydata.current_page<=1"><f7-icon icon="fas fa-chevron-left color-gray" ></f7-icon></span>
+                            <f7-link @click="page_change(querydata.current_page-1)" :class="querydata.current_page<=1?'disabled':''">
+                                <f7-icon icon="fas fa-chevron-left color-blue"></f7-icon>
                             </f7-link>
                             <f7-link popover-open="#pop-paging" href="#" class="text-color-blue">{{querydata.current_page}} / {{querydata.last_page}}</f7-link>
-                            <f7-link @click="page_change(querydata.current_page+1)">
-                                <span v-show="querydata.current_page<querydata.last_page"><f7-icon icon="fas fa-chevron-right color-blue"></f7-icon></span>
-                                <span v-show="querydata.current_page>=querydata.last_page"><f7-icon icon="fas fa-chevron-right color-gray" ></f7-icon></span>
+                            <f7-link @click="page_change(querydata.current_page+1)" :class="querydata.current_page>=querydata.last_page?'disabled':''">
+                                <f7-icon icon="fas fa-chevron-right color-blue"></f7-icon>
                             </f7-link>
                         </f7-list-item>
                     </f7-list>
@@ -113,7 +111,7 @@ export default {
             default: () => {
                 return {
                     'id': { direction: 'desc', table: '' }, //  asc or 'desc'
-                    '__activeField': 'id', // // current sort field
+                    '__activeField': 'id', // current sort field
                 }
             }
         },
@@ -171,6 +169,7 @@ export default {
             this.$emit('orderChange')
         },
         page_change(page) {
+            if (page==0) return
             this.per_page.next_page = page
             this.$emit('update:per_page', this.per_page)
             this.$emit('pageChange')
