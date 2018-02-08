@@ -1,5 +1,5 @@
 <template>
-    <div class="data-table data-table-init card" id="data_table">
+    <div class="data-table data-table-init card" :id="table_id">
         <div class="card-header">
             <div class="data-table-header">
                 <f7-label v-if="querydata.total>0">{{querydata.from}}-{{querydata.to}} of {{querydata.total}}</f7-label>
@@ -14,7 +14,7 @@
                             <f7-link @click="page_change(querydata.current_page-1)" :class="querydata.current_page<=1?'disabled':''">
                                 <f7-icon icon="fas fa-chevron-left color-blue"></f7-icon>
                             </f7-link>
-                            <f7-link :popover-open="'#pop-paging'+table_id" href="#" class="text-color-blue">{{querydata.current_page}} / {{querydata.last_page}}</f7-link>
+                            <f7-link :popover-open="'#pop-paging'+popover_id" href="#" class="text-color-blue">{{querydata.current_page}} / {{querydata.last_page}}</f7-link>
                             <f7-link @click="page_change(querydata.current_page+1)" :class="querydata.current_page>=querydata.last_page?'disabled':''">
                                 <f7-icon icon="fas fa-chevron-right color-blue"></f7-icon>
                             </f7-link>
@@ -58,7 +58,7 @@
                 </tbody>
             </table>
         </div>
-        <f7-popover class="popover-menu popover-max-height" :id="'pop-paging'+table_id">
+        <f7-popover class="popover-menu popover-max-height" :id="'pop-paging'+popover_id">
             <f7-list>
                 <f7-list-item link="#" :title="sr" v-for="(sr, index) in querydata.last_page" :key="index" class="popover-close" @click="page_change(sr)" :class="querydata.current_page==sr ? 'color-blue' : ''">
                 </f7-list-item>
@@ -106,6 +106,7 @@ export default {
         fields: { type: Array, required: true, },
         querydata: { type: Object, required: true, },
         __checkbox: { type: Boolean, default: false, },
+        table_id: { type: String, default: '', },
         sortOrders: {
             type: Object,
             default: () => {
@@ -130,7 +131,7 @@ export default {
     data() {
         return {
             selectedIndexList: [], // the index of selected rows
-            table_id: 0, // to distinguish tables
+            popover_id: 0, // to distinguish multiple popovers
         }
     },
     filters: {
@@ -140,7 +141,7 @@ export default {
     },
     created() {},
     mounted() {
-        this.table_id = Date.now()
+        this.popover_id = Date.now()
     },
     beforeDestroy() {},
     computed: {
